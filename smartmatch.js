@@ -1,6 +1,7 @@
 //     (c) 2012 J. Thomas Martin
 //     Smartmatch.js is freely distributable under the MIT license.
-//     Portions of Smartmatch.js are inspired or borrowed from Underscore.js.
+//     Portions of Smartmatch.js are inspired or borrowed from Underscore.js, 
+//     as well as Perl's smartmatch operator.
 
 (function() {
 
