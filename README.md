@@ -8,12 +8,12 @@ A half-assed decent "smart matching" utility for JavaScript.  Requires [Undersco
 
 ```js
 // Direct comparison
-smartmatch('Jenny', 'Jenny');
-
-// RegExp comparison
-smartmatch('867-5309', /\d{3}-\d{4}/);
+smartmatch('I got it!', 'I got it!');
 
 // At least one item in the array smartmatches the second argument
+smartmatch(['Jenny', '867-5309', 'I got it!'], 'I got it!');
+
+// RegExp comparison
 smartmatch(['Jenny', '867-5309', 'I got it!'], /\d{3}-\d{4}/);
 
 // At least one item in the first array smartmatches at least one item in the second
@@ -23,9 +23,7 @@ smartmatch(
 );
 
 // Probably...
-smartmatch('Jenny', function(name) {
-  return bayes.classify(name) === 'female';
-});
+smartmatch('Jenny', function(name) { return bayes.classify(name) === 'female'; });
 ```
 
 `smartmatch` applies itself recursively if one of its arguments is an array, except in the following case:
