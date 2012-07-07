@@ -1,6 +1,6 @@
 //     (c) 2012 J. Thomas Martin
 //     Smartmatch.js is freely distributable under the MIT license.
-//     Portions of Data.js are inspired or borrowed from Underscore.js.
+//     Portions of Smartmatch.js are inspired or borrowed from Underscore.js.
 
 (function() {
 
