@@ -58,8 +58,10 @@
 
   // Export `smartmatch`.  If we're in the browser, add `smartmatch` as
   // a global object via a string identifier.
-  if (exports !== void 0) {
-    if (module !== void 0 && module.exports) exports = module.exports = smartmatch;
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = smartmatch;
+    }
     exports.smartmatch = smartmatch;
   } else {
     root['smartmatch'] = smartmatch;
