@@ -30,29 +30,62 @@
     return _(array).any(function(item) { return smartmatch(obj, item); });
   }
 
+  function arrayMatch(x, y) {
+    switch(toString.call(y)) {
+      case '[object Function]': return !!y(x);
+      case '[object Number]':   return x.length === 2 ? isWithin(y, x) : anyMatch(x, y);
+      default:                  return anyMatch(x, y);
+    }
+  }
+
+  function functionMatch(x, y) {
+    return !!x(y);
+  }
+
+  function regExpMatch(x, y) {
+    switch(toString.call(y)) {
+      case '[object Array]':    return anyMatch(y, x);
+      case '[object Function]': return !!y(x);
+      case '[object RegExp]':   return _(x).isEqual(y);
+      default:                  return x.test(y);
+    }
+  }
+
+  function numberMatch(x, y) {
+    switch(toString.call(y)) {
+      case '[object Array]':    return y.length === 2 ? isWithin(x, y) : anyMatch(y, x);
+      case '[object Function]': return !!y(x);
+      case '[object RegExp]':   return y.test(x);
+      default:                  return _(x).isEqual(y);
+    }
+  }
+
+  function stringMatch(x, y) {
+    switch(toString.call(y)) {
+      case '[object Array]':    return anyMatch(y, x);
+      case '[object Function]': return !!y(x);
+      case '[object RegExp]':   return y.test(x);
+      default:                  return _(x).isEqual(y);
+    }
+  }
+
+  function defaultMatch(x, y) {
+    switch(toString.call(y)) {
+      case '[object Array]':    return anyMatch(y, x);
+      case '[object Function]': return !!y(x);
+      default:                  return _(x).isEqual(y);
+    }
+  }
+
   // Core smartmatch function.
   function smartmatch(x, y) {
     switch(toString.call(x)) {
-      case '[object Array]':
-        return _(y).isFunction() ? !!y(x) :
-               _(y).isNumber() && x.length === 2 ? isWithin(y, x) : anyMatch(x, y);
-      case '[object Function]':
-        return !!x(y);
-      case '[object RegExp]':
-        return _(y).isArray() ? anyMatch(y, x) :
-               _(y).isFunction() ? !!y(x) :
-               _(y).isNumber() || _(y).isString() ? x.test(y) : _(x).isEqual(y);
-      case '[object Number]':
-        return _(y).isArray() ? y.length === 2 ? isWithin(x, y) : anyMatch(y, x) :
-               _(y).isFunction() ? !!y(x) :
-               _(y).isRegExp() ? y.test(x) : _(x).isEqual(y);
-      case '[object String]':
-        return _(y).isArray() ? anyMatch(y, x) :
-               _(y).isFunction() ? !!y(x) :
-               _(y).isRegExp() ? y.test(x) : _(x).isEqual(y);
-      default:
-        return _(y).isArray() ? anyMatch(y, x) :
-               _(y).isFunction() ? !!y(x) : _(x).isEqual(y);
+      case '[object Array]':    return arrayMatch(x, y);
+      case '[object Function]': return functionMatch(x, y);
+      case '[object RegExp]':   return regExpMatch(x, y);
+      case '[object Number]':   return numberMatch(x, y);
+      case '[object String]':   return stringMatch(x, y);
+      default:                  return defaultMatch(x, y);
     }
   }
 
