@@ -4,7 +4,7 @@ A half-assed decent "smart matching" utility for JavaScript.  Requires [Undersco
 
 ## What it Does
 
-`smartmatch` applies various equality tests depending on the type of variables provided.  The following examples return true:
+`smartmatch` compares its arguments "polymorphically", determining the appropriate comparison mechanism based on its arguments' types.  The following examples return true:
 
 ```js
 // Direct comparison
