@@ -13,8 +13,8 @@
   var hasOwn = Object.prototype.hasOwnProperty;
 
 
-  // Functions used for interval comparison
-  // --------------------------------------
+  // Functions used for interval comparison.
+  // ---------------------------------------
 
   // Interval comparison interprets false-y values as unbounded.
   function isUnbounded(obj) { return obj === null || obj === void 0 || obj === ''; }
