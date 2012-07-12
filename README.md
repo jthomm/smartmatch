@@ -1,10 +1,10 @@
 # Smartmatch.js
 
-A half-assed decent "smart matching" utility for JavaScript.  Requires [Underscore.js](https://github.com/documentcloud/underscore).
+A half-assed decent "smart matching" utility for JavaScript.  Inspired by Perl's [smartmatch operator](http://perldoc.perl.org/perlop.html#Smartmatch-Operator).
 
 ## What it Does
 
-`smartmatch` compares its arguments "polymorphically", determining the appropriate comparison mechanism based on its arguments' types.  The following examples return true:
+`smartmatch` takes two arguments and decides how to compare them based on their types.  The following examples return true:
 
 ```js
 // Direct comparison
@@ -53,7 +53,7 @@ The below table loosely summarizes `smartmatch`'s behavior:
       <th>re</th>
       <th>num</th>
       <th>str</th>
-      <th>else</th>
+      <th>other</th>
     </tr>
   </thead>
   <tbody>
@@ -73,43 +73,43 @@ The below table loosely summarizes `smartmatch`'s behavior:
       <td>func(re)</td>
       <td>func(num)</td>
       <td>func(str)</td>
-      <td>func(else)</td>
+      <td>func(other)</td>
     </tr>
     <tr>
       <td><b>re</b></td>
       <td>any</td>
       <td>func(re)</td>
-      <td>_.isEqual</td>
+      <td>regExpEq</td>
       <td>re.test(num)</td>
       <td>re.test(str)</td>
-      <td>_.isEqual</td>
+      <td>re.test(other)</td>
     </tr>
     <tr>
       <td><b>num</b></td>
       <td>any/interval</td>
       <td>func(num)</td>
       <td>re.test(num)</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
+      <td>numberEq</td>
+      <td>false</td>
+      <td>false</td>
     </tr>
     <tr>
       <td><b>str</b></td>
       <td>any</td>
       <td>func(str)</td>
       <td>re.test(str)</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
+      <td>false</td>
+      <td>stringEq</td>
+      <td>false</td>
     </tr>
     <tr>
-      <td><b>else</b></td>
+      <td><b>other</b></td>
       <td>any</td>
-      <td>func(else)</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
-      <td>_.isEqual</td>
+      <td>func(other)</td>
+      <td>re.test(other)</td>
+      <td>false</td>
+      <td>false</td>
+      <td>misc/deep</td>
     </tr>
   </tbody>
 </table>
