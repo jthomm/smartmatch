@@ -31,7 +31,6 @@
 
   // Check whether at least one item in `array` smartmatches with `obj`.
   // -------------------------------------------------------------------
-
   function anyMatch(array, obj) {
     for (var i=0, n=array.length; i<n; i++) {
       if (smartmatch(obj, array[i])) return true;
@@ -42,7 +41,6 @@
 
   // When first argument to `smartmatch` is an array.
   // ------------------------------------------------
-
   function arrayMatch(x, y) {
     switch(toString.call(y)) {
       case '[object Function]': return !!y(x);
@@ -54,13 +52,11 @@
 
   // When first argument to `smartmatch` is a function.
   // --------------------------------------------------
-
   function functionMatch(x, y) { return !!x(y); }
 
 
   // When first argument to `smartmatch` is a regular expression.
   // ------------------------------------------------------------
-
   function regExpEq(x, y) {
     return x.source == y.source &&
            x.global == y.global &&
@@ -80,7 +76,6 @@
 
   // When first argument to `smartmatch` is a number.
   // ------------------------------------------------
-
   function numberEq(x, y) { return x != +x ? y != +y : (x == 0 ? 1/x == 1/y : x == +y); }
 
   function numberMatch(x, y) {
@@ -96,7 +91,6 @@
 
   // When first argument to `smartmatch` is a string.
   // ------------------------------------------------
-
   function stringEq(x, y) { return x == String(y); }
 
   function stringMatch(x, y) {
@@ -114,7 +108,6 @@
   // Abandons `smartmatch`-ing in favor of common sense equivalence.
   // Closely adapted from Underscore.js' `_.isEqual` function.
   // ----------------------------------------------------------------
-
   function defaultEq(x, y, stack) {
     if (x === y) return x !== 0 || 1/x == 1/y;
     if (x == null || y == null) return x === y;
@@ -173,7 +166,6 @@
   // When first argument to `smartmatch` is not an array, 
   // a function, a regular expression, a number, or a string.
   // --------------------------------------------------------
-
   function defaultMatch(x, y) {
     switch(toString.call(y)) {
       case '[object Array]':    return anyMatch(y, x);
@@ -185,7 +177,6 @@
 
   // Core smartmatch function.
   // -------------------------
-
   function smartmatch(x, y) {
     switch(toString.call(x)) {
       case '[object Array]':    return arrayMatch(x, y);
