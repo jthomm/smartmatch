@@ -1,10 +1,10 @@
 # Smartmatch.js
 
-A half-assed decent "smart matching" utility for JavaScript.  Inspired by Perl's [smartmatch operator](http://perldoc.perl.org/perlop.html#Smartmatch-Operator).
+A half-assed decent overloaded comparison operator for JavaScript.  Inspired by Perl's [smartmatch operator](http://perldoc.perl.org/perlop.html#Smartmatch-Operator), `smartmatch` takes two arguments and decides how to compare them based on their types.
 
-## What it Does
+## Examples
 
-`smartmatch` takes two arguments and decides how to compare them based on their types.  The following examples return true:
+The following examples return true:
 
 ```js
 // Direct comparison
@@ -40,7 +40,7 @@ If one of the arguments is a number and the array argument is 2 elements long, `
 smartmatch(tutoneHits, [2, null]);
 ```
 
-## How it Works
+## Behavior
 
 The below table loosely summarizes `smartmatch`'s behavior:
 
@@ -121,8 +121,10 @@ The below table loosely summarizes `smartmatch`'s behavior:
 ```js
 var matches = smartcurry(function(hit) { return hit.band == 'Tommy Tutone'; });
 var hits = [
-  {band: 'Tommy Tutone', song: '867-5309/Jenny'}, {band: 'The Knack', song: 'My Sharona'}, 
-  {band: 'The Outfield', song: 'Your Love'}, {band: 'Tommy Tutone', song: 'Angel Say No'}
+  {band: 'Tommy Tutone', song: '867-5309/Jenny'}, 
+  {band: 'The Knack', song: 'My Sharona'}, 
+  {band: 'The Outfield', song: 'Your Love'}, 
+  {band: 'Tommy Tutone', song: 'Angel Say No'}
 ];
 var results = [];
 for (var i=0, n=hits.length; i<n; i++) {
