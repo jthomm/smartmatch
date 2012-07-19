@@ -152,9 +152,7 @@
         }
       }
       if (result) {
-        for (key in y) {
-          if (hasOwn.call(y, key) && !(size--)) break;
-        }
+        for (key in y) if (hasOwn.call(y, key) && !(size--)) break;
         result = !size;
       }
     }
