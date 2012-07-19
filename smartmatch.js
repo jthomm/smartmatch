@@ -152,7 +152,9 @@
         }
       }
       if (result) {
-        for (key in y) if (hasOwn.call(y, key) && !(size--)) break;
+        for (key in y) {
+          if (hasOwn.call(y, key) && !(size--)) break;
+        }
         result = !size;
       }
     }
@@ -186,16 +188,33 @@
     }
   }
 
+  // Experimental!  If `smartmatch`-ing against the same object many times over
+  // (e.g. smartmatch(['a', 3.14], obj1), smartmatch(['a', 3.14], obj2), etc.),
+  // currying (via smartcurry(['a', 'b', 'c'])) may slightly enhance performance.
+  // ----------------------------------------------------------------------------
+  function smartcurry(x) {
+    switch(toString.call(x)) {
+      case '[object Array]':    return function(y) { return arrayMatch(x, y); };
+      case '[object Function]': return function(y) { return functionMatch(x, y); };
+      case '[object RegExp]':   return function(y) { return regExpMatch(x, y); };
+      case '[object Number]':   return function(y) { return numberMatch(x, y); };
+      case '[object String]':   return function(y) { return stringMatch(x, y); };
+      default:                  return function(y) { return defaultMatch(x, y); };
+    }
+  }
 
-  // Export `smartmatch`.  If we're in the browser, add 
-  // `smartmatch` as a global object via a string identifier.
+  // Export `smartmatch` and `smartcurry`.  If we're in the browser, add 
+  // `smartmatch` and `smartcurry` as a global object via a string identifier.
   if (typeof exports !== 'undefined') {
     if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = smartmatch;
+      exports.smartmatch = module.exports.smartmatch = smartmatch;
+      exports.smartcurry = module.exports.smartcurry = smartcurry;
     }
     exports.smartmatch = smartmatch;
+    exports.smartcurry = smartcurry;
   } else {
     root['smartmatch'] = smartmatch;
+    root['smartcurry'] = smartcurry;
   }
 
 }).call(this);
