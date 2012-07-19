@@ -113,3 +113,23 @@ The below table loosely summarizes `smartmatch`'s behavior:
     </tr>
   </tbody>
 </table>
+
+## Smartcurry
+
+(Experimental!)  Because `smartmatch` type checks its arguments before comparing them, it can take a lot longer than calling the internal comparison function directly.  To help recapture some of the performance sacrificed, `smartcurry` accepts one argument in advance and returns a slightly less overloaded function (that only has to type check the "second" argument each time it's called).  This is especially useful when you want to `smartmatch` a collection of objects against a single comparison object over and over again:
+
+```js
+var matches = smartcurry(function(hit) { return hit.band == 'Tommy Tutone'; });
+var hits = [
+  {band: 'Tommy Tutone', song: '867-5309/Jenny'}, {band: 'The Knack', song: 'My Sharona'}, 
+  {band: 'The Outfield', song: 'Your Love'}, {band: 'Tommy Tutone', song: 'Angel Say No'}
+];
+var results = [];
+for (var i=0, n=hits.length; i<n; i++) {
+  var hit = hits[i];
+  if (matches(hit)) results.push(hit);
+}
+// results = [{band: 'Tommy Tutone', song: '867-5309/Jenny'}, {band: 'Tommy Tutone', song: 'Angel Say No'}];
+```
+
+The performance you buy back via currying is small enough to fall into the 'premature optimization' category.  However, I add it in case a better programmer can implement it effectively.
