@@ -189,9 +189,9 @@
   }
 
   // Experimental!  If `smartmatch`-ing against the same object many times over
-  // (e.g. smartmatch(['a', 3.14], obj1), smartmatch(['a', 3.14], obj2), etc.),
-  // currying (via smartcurry(['a', 'b', 'c'])) may slightly enhance performance.
-  // ----------------------------------------------------------------------------
+  // (e.g. smartmatch(/(\d)\1/, obj1), smartmatch(/(\d)\1/, obj2), etc.),
+  // currying (via smartcurry(/(\d)\1/)) may slightly enhance performance.
+  // --------------------------------------------------------------------------
   function smartcurry(x) {
     switch(toString.call(x)) {
       case '[object Array]':    return function(y) { return arrayMatch(x, y); };
