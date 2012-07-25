@@ -1,13 +1,13 @@
 # Smartmatch.js
 
-A half-assed decent overloaded comparison operator for JavaScript.  Inspired by Perl's [smartmatch operator](http://perldoc.perl.org/perlop.html#Smartmatch-Operator), `smartmatch` takes two arguments and decides how to compare them based on their types.
+`smartmatch` is an overloaded equality function for JavaScript.
 
 ## Examples
 
 The following examples return true:
 
 ```js
-// Direct comparison
+// Normal comparison
 smartmatch('I got it!', 'I got it!');
 
 // At least one item in the array smartmatches the second argument
@@ -16,28 +16,11 @@ smartmatch(['Jenny', '867-5309', 'I got it!'], 'I got it!');
 // RegExp comparison
 smartmatch(['Jenny', '867-5309', 'I got it!'], /\d{3}-\d{4}/);
 
-// At least one item in the first array smartmatches at least one item in the second
-smartmatch(
-  [{'Sir Mix-a-Lot': '649-2568'}, {'Jenny': '867-5309'}, {'Emergency': '911'}],
-  [{'Jenny': '867-5309'}, {'Information': '311'}]
-);
+// Common keys smartmatch each other
+smartmatch({name: 'Jenny', number: '867-5309'}, {number: /\d{3}-\d{4}/});
 
 // Probably...
 smartmatch('Jenny', function(name) { return bayes.classify(name) === 'female'; });
-```
-
-`smartmatch` applies itself recursively if one of its arguments is an array, except in the following case:
-
-```js
-// pi is at least 0 and less than 10
-smartmatch(3.14159, [0, 10]);
-```
-
-If one of the arguments is a number and the array argument is 2 elements long, `smartmatch` treats the array as a left-closed, right-open interval and checks whether the number is within that interval.  In addition, if either element of the array is null, undefined, or an empty string, the interval is treated as unbounded.  This is useful for quick gt, gte, lt, lte comparisons:
-
-```js
-// Did Tommy Tutone have more than one song hit the Top-40?
-smartmatch(tutoneHits, [2, null]);
 ```
 
 ## Behavior
@@ -113,25 +96,3 @@ The below table loosely summarizes `smartmatch`'s behavior:
     </tr>
   </tbody>
 </table>
-
-## Smartcurry
-
-(Experimental!)  Because `smartmatch` type checks its arguments before comparing them, it can take a lot longer than calling the internal comparison function directly.  To help recapture some of the performance sacrificed, `smartcurry` accepts one argument in advance and returns a slightly less overloaded function (that only has to type check the "second" argument each time it's called).  This is especially useful when you want to `smartmatch` a collection of objects against a single comparison object over and over again:
-
-```js
-var matches = smartcurry(function(hit) { return hit.band == 'Tommy Tutone'; });
-var hits = [
-  {band: 'Tommy Tutone', song: '867-5309/Jenny'}, 
-  {band: 'The Knack', song: 'My Sharona'}, 
-  {band: 'The Outfield', song: 'Your Love'}, 
-  {band: 'Tommy Tutone', song: 'Angel Say No'}
-];
-var results = [];
-for (var i=0, n=hits.length; i<n; i++) {
-  var hit = hits[i];
-  if (matches(hit)) results.push(hit);
-}
-// results = [{band: 'Tommy Tutone', song: '867-5309/Jenny'}, {band: 'Tommy Tutone', song: 'Angel Say No'}];
-```
-
-The performance you buy back via currying is small enough to fall into the 'premature optimization' category.  However, I add it in case a better programmer can implement it effectively.
