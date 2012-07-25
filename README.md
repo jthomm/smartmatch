@@ -1,6 +1,10 @@
 # Smartmatch.js
 
-`smartmatch` is an overloaded equality function for JavaScript.
+`smartmatch` is a faux-overloaded equality function for JavaScript.
+
+### Faux-verloading
+
+JavaScript does not support type checking by default, so `smartmatch` checks type at run time.  Thus, if performance is your #1 concern, `smartmatch` may not be right for you.
 
 ## Examples
 
