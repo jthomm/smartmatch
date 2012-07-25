@@ -6,7 +6,7 @@
 
 JavaScript does not support type checking by default, so `smartmatch` checks type at run time.  Thus, if performance is your #1 concern, `smartmatch` may not be right for you.
 
-## Examples
+### Examples
 
 The following examples return true:
 
@@ -27,7 +27,7 @@ smartmatch({name: 'Jenny', number: '867-5309'}, {number: /\d{3}-\d{4}/});
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
 ```
 
-## Behavior
+### Behavior
 
 In the below tables, the first column denotes `x`'s type and the top row denotes `y`'s type:
 ```js
