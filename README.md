@@ -20,79 +20,45 @@ smartmatch(['Jenny', '867-5309', 'I got it!'], /\d{3}-\d{4}/);
 smartmatch({name: 'Jenny', number: '867-5309'}, {number: /\d{3}-\d{4}/});
 
 // Probably...
-smartmatch('Jenny', function(name) { return bayes.classify(name) === 'female'; });
+smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
 ```
 
 ## Behavior
 
-The below table loosely summarizes `smartmatch`'s behavior:
-
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>arr</th>
-      <th>func</th>
-      <th>re</th>
-      <th>num</th>
-      <th>str</th>
-      <th>other</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><b>arr</b></td>
-      <td>any</td>
-      <td>func(arr)</td>
-      <td>any</td>
-      <td>any/interval</td>
-      <td>any</td>
-      <td>any</td>
-    </tr>
-    <tr>
-      <td><b>func</b></td>
-      <td>func(arr)</td>
-      <td>func(func)</td>
-      <td>func(re)</td>
-      <td>func(num)</td>
-      <td>func(str)</td>
-      <td>func(other)</td>
-    </tr>
-    <tr>
-      <td><b>re</b></td>
-      <td>any</td>
-      <td>func(re)</td>
-      <td>regExpEq</td>
-      <td>re.test(num)</td>
-      <td>re.test(str)</td>
-      <td>re.test(other)</td>
-    </tr>
-    <tr>
-      <td><b>num</b></td>
-      <td>any/interval</td>
-      <td>func(num)</td>
-      <td>re.test(num)</td>
-      <td>numberEq</td>
-      <td>false</td>
-      <td>false</td>
-    </tr>
-    <tr>
-      <td><b>str</b></td>
-      <td>any</td>
-      <td>func(str)</td>
-      <td>re.test(str)</td>
-      <td>false</td>
-      <td>stringEq</td>
-      <td>false</td>
-    </tr>
-    <tr>
-      <td><b>other</b></td>
-      <td>any</td>
-      <td>func(other)</td>
-      <td>re.test(other)</td>
-      <td>false</td>
-      <td>false</td>
-      <td>misc/deep</td>
-    </tr>
-  </tbody>
-</table>
+In the below tables, the first column denotes `x`'s type and the top row denotes `y`'s type:
+```js
++----------+-------------------------------+-----------+--------------+--------------+
+|          | Function                      | Array     | Object       | RegExp       |
++----------+-------------------------------+-----------+--------------+--------------+
+| Function | x.toString() === y.toString() | !!x(y)    | !!x(y)       | !!x(y)       |
+| Array    | !!y(x)                        | all(x, y) | any(x, y)    | any(x, y)    |
+| Object   | !!y(x)                        | any(y, x) | values(x, y) | false        |
+| RegExp   | !!y(x)                        | any(y, x) | false        | srcCmp(x, y) |
+| String   | !!y(x)                        | any(y, x) | false        | y.test(x)    |
+| Date     | !!y(x)                        | any(y, x) | false        | y.test(x)    |
+| Number   | !!y(x)                        | any(y, x) | false        | y.test(x)    |
+| Other    | !!y(x)                        | any(y, x) | false        | false        |
++----------+-------------------------------+-----------+--------------+--------------+
+```
+```js
++----------+---------------------+---------------------+-----------------+-----------+
+|          | String              | Date                | Number          | Other     |
++----------+---------------------+---------------------+-----------------+-----------+
+| Function | !!x(y)              | !!x(y)              | !!x(y)          | !!x(y)    |
+| Array    | any(x, y)           | any(x, y)           | any(x, y)       | any(x, y) |
+| Object   | false               | false               | false           | false     |
+| RegExp   | x.test(y)           | x.test(y)           | x.test(y)       | false     |
+| String   | x === y             | +new Date(x) === +y | x === String(y) | false     |
+| Date     | +x === +new Date(y) | +x === +y           | +x === +y       | false     |
+| Number   | String(x) === y     | +x === +y           | harmEgal(x, y)  | false     |
+| Other    | false               | false               | false           | x === y   |
++----------+---------------------+---------------------+-----------------+-----------+
+```
+ 
+...where:
+ 
+* `all(x, y)` means corresponding elements of `x` and `y` smartmatch one another
+* `any(x, y)` means at least one element of `x` smartmatches `y`
+* `values(x, y)` means the values of keys that `x` and `y` both have smartmatch one another
+* `srcCmp(x, y)` means the source and flags of regexes `x` and `y` are the same
+* `harmEgal(x, y)` stands for `x === y ? (x !== 0 || 1 / x === 1 / y) : x !== x && y !== y`
