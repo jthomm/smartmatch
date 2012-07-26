@@ -21,7 +21,7 @@ smartmatch(['Jenny', '867-5309', 'I got it!'], 'I got it!');
 smartmatch(['Jenny', '867-5309', 'I got it!'], /\d{3}-\d{4}/);
 
 // Common keys smartmatch each other
-smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {name: /([a-z])\1/, date: '11/16/1981'});
+smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {date: '16-Nov-1981'});
 
 // Probably...
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
