@@ -4,7 +4,7 @@
 
 ### Faux-verloading
 
-JavaScript does not support type checking by default, so `smartmatch` checks type at run time.  Thus, if performance is your #1 concern, `smartmatch` may not be right for you.
+JavaScript does not support type checking by default, so `smartmatch` does it at run time.  Thus, if performance is your #1 concern, `smartmatch` may not be right for you.
 
 ### Examples
 
@@ -21,7 +21,7 @@ smartmatch(['Jenny', '867-5309', 'I got it!'], 'I got it!');
 smartmatch(['Jenny', '867-5309', 'I got it!'], /\d{3}-\d{4}/);
 
 // Common keys smartmatch each other
-smartmatch({name: 'Jenny', number: '867-5309'}, {number: /\d{3}-\d{4}/});
+smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {name: /([a-z])\1/, date: '11/16/1981'});
 
 // Probably...
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
