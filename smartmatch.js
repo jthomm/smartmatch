@@ -65,7 +65,7 @@
     switch (xClass) {
       case '[object Function]':
         switch (yClass) {
-          case '[object Function]': return x.toString() === y.toString()
+          case '[object Function]': return x.toString() === y.toString();
           default:                  return !!x(y);
         }
       case '[object Array]':
@@ -97,7 +97,7 @@
           case '[object Array]':    return anyElementMatches(y, x);
           case '[object RegExp]':   return y.test(x);
           case '[object Number]':   return x === String(y);
-          case '[object Date]':     return +new Date(x) === +y
+          case '[object Date]':     return +new Date(x) === +y;
           case '[object String]':   return x === y;
           default:                  return false;
         }
