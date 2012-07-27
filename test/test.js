@@ -119,6 +119,7 @@ test('Array', function () {
   ok(smartmatch(stoogeAges, 29), 'vs. Number');
   ok(smartmatch(stoogeBdays, new Date(1903, 9, 22)), 'vs. Date');
   ok(smartmatch(stoogeNames, /([a-z])\1/), 'vs. RegExp');
+  ok(smartmatch(stoogeNames, [stoogeNames, /([a-z])\1/, 'Curly']), 'vs. Array');
 });
  
 test('Function', function () {
