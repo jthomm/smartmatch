@@ -8,7 +8,7 @@ test('Null', function () {
   ok(!smartmatch(null, {a: null, null: 1}), 'vs. Object');
   ok(!smartmatch(null, {}), 'vs. `{}`');
 });
- 
+
 test('Undefined', function () {
   ok(!smartmatch(undefined, null), 'vs. Null');
   ok(smartmatch(undefined, undefined), 'vs. Undefined');
@@ -19,7 +19,7 @@ test('Undefined', function () {
   ok(!smartmatch(undefined, {a: undefined, undefined: 1}), 'vs. Object');
   ok(!smartmatch(undefined, {}), 'vs. `{}`');
 });
- 
+
 test('Boolean', function () {
   ok(!smartmatch(false, null), 'vs. Null');
   ok(!smartmatch(false, undefined), 'vs. Undefined');
@@ -31,10 +31,10 @@ test('Boolean', function () {
   ok(!smartmatch(false, {a: false, false: 1}), 'vs. Object');
   ok(!smartmatch(false, {}), 'vs. `{}`');
 });
- 
+
 test('String', function () {
   var endsWithPie = function (string) { return string.slice(-3) === 'Pie'; };
- 
+
   ok(!smartmatch('', null), 'vs. Null');
   ok(!smartmatch('', undefined), 'vs. Undefined');
   ok(!smartmatch('', false), 'vs. `false`');
@@ -49,14 +49,14 @@ test('String', function () {
   ok(!smartmatch('', {}), 'vs. `{}`');
   ok(smartmatch('Custard Pie', endsWithPie), 'vs. Function');
 });
- 
+
 test('Number', function () {
   var inf = 1/0;
   var negInf = -1/0;
   var zero = 1/inf;
   var negZero = 1/negInf;
   var isLessThanPi = function (number) { return number < Math.PI; };
- 
+
   ok(!smartmatch(0, null), 'vs. Null');
   ok(!smartmatch(0, undefined), 'vs. Undefined');
   ok(!smartmatch(0, false), 'vs. `false`');
@@ -77,11 +77,11 @@ test('Number', function () {
   ok(!smartmatch(0, {}), 'vs. `{}`');
   ok(smartmatch(3.14, isLessThanPi), 'vs. Function');
 });
- 
+
 test('Date', function () {
- var date = new Date(1987, 2, 28);
+  var date = new Date(1987, 2, 28);
   var is20thCentury = function (date) { return date.getFullYear() < 2000; };
- 
+
   ok(!smartmatch(date, null), 'vs. Null');
   ok(!smartmatch(date, undefined), 'vs. Undefined');
   ok(!smartmatch(date, true), 'vs. Boolean');
@@ -94,10 +94,10 @@ test('Date', function () {
   ok(!smartmatch(date, {a: date}), 'vs. Object');
   ok(smartmatch(date, is20thCentury), 'vs. Function');
 });
- 
+
 test('RegExp', function () {
   var repeatLetter = /([a-z])\1/;
- 
+
   ok(!smartmatch(repeatLetter, null), 'vs. Null');
   ok(!smartmatch(/^un/, undefined), 'vs. Undefined');
   ok(!smartmatch(/^f/, false), 'vs. Boolean');
@@ -109,7 +109,7 @@ test('RegExp', function () {
   ok(smartmatch(repeatLetter, ['a', /\d/, /([a-z])\1/]), 'vs. Array 1');
   ok(smartmatch(repeatLetter, ['a', 'bb', /\d/]), 'vs. Array 2');
 });
- 
+
 test('Array', function () {
   ok(smartmatch(['a', 'b', null], null), 'vs. Null');
   ok(smartmatch(['a', 'b', undefined], undefined), 'vs. Undefined');
@@ -137,14 +137,14 @@ test('Object', function () {
   ok(smartmatch({a: 1, b: 2}, {a: 1, b: 2}), 'vs. Object');
   ok(smartmatch({a: 1, b: 2}, function (object) { return object.b === 2; }), 'vs. Function');
 });
- 
+
 test('Function', function () {
   var isLessThanPi = function (number) { return number < Math.PI; };
   var isLessThanPiClone = function (number) { return number < Math.PI; };
   var lastElemIsPi = function (array) { return array[array.length - 1] === Math.PI; };
   var hasOwnPie = function (object) { return object.hasOwnProperty('pie'); };
   var endsWithPie = function (string) { return string.slice(-3) === 'Pie'; };
- 
+
   ok(smartmatch(isLessThanPi, null), 'vs. Null');
   ok(!smartmatch(isLessThanPi, undefined), 'vs. Undefined');
   ok(smartmatch(isLessThanPi, true), 'vs. Boolean');
