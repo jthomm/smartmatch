@@ -111,15 +111,31 @@ test('RegExp', function () {
 });
  
 test('Array', function () {
-  var stoogeNames = ['Moe', 'Larry', 'Curly'];
-  var stoogeAges = [35, 30, 29];
-  var stoogeBdays = [new Date(1897, 5, 19), new Date(1902, 9, 5), new Date(1903, 9, 22)];
- 
-  ok(smartmatch(stoogeNames, 'Curly'), 'vs. String');
-  ok(smartmatch(stoogeAges, 29), 'vs. Number');
-  ok(smartmatch(stoogeBdays, new Date(1903, 9, 22)), 'vs. Date');
-  ok(smartmatch(stoogeNames, /([a-z])\1/), 'vs. RegExp');
-  ok(smartmatch(stoogeNames, [stoogeNames, /([a-z])\1/, 'Curly']), 'vs. Array');
+  ok(smartmatch(['a', 'b', null], null), 'vs. Null');
+  ok(smartmatch(['a', 'b', undefined], undefined), 'vs. Undefined');
+  ok(smartmatch(['a', 'b', false], false), 'vs. Boolean');
+  ok(smartmatch(['a', 'b', 'c'], 'c'), 'vs. String');
+  ok(smartmatch(['a', 'b', 3], 3), 'vs. Number');
+  ok(smartmatch([new Date(1897, 5, 19), new Date(1902, 9, 5), new Date(1903, 9, 22)], 
+                new Date(1903, 9, 22)),
+     'vs. Date');
+  ok(smartmatch(['a', 'b', /\d/], /\d/), 'vs. RegExp');
+  ok(smartmatch(['a', 'b', 'c'], ['a', 'b', 'c']), 'vs. Array');
+  ok(smartmatch([{c: 3}, {b: 2}], {a: 1, b: 2}), 'vs. Object');
+  ok(smartmatch(['a', 'b', 'c'], function (array) { return array[0] === 'a'; }), 'vs. Function');
+});
+
+test('Object', function () {
+  ok(!smartmatch({a: 1, b: 2}, null), 'vs. Null');
+  ok(!smartmatch({a: 1, b: 2}, undefined), 'vs. Undefined');
+  ok(!smartmatch({a: 1, b: 2}, true), 'vs. Boolean');
+  ok(!smartmatch({a: 1, b: 2}, 'a'), 'vs. String');
+  ok(!smartmatch({a: 1, b: 2}, 1), 'vs. Number');
+  ok(!smartmatch({a: 1, b: 2}, new Date(1987, 2, 28)), 'vs. Date');
+  ok(!smartmatch({a: 1, b: 2}, /\w/), 'vs. RegExp');
+  ok(smartmatch({a: 1, b: 2}, [{c: 3}, {b: 2}]), 'vs. Array');
+  ok(smartmatch({a: 1, b: 2}, {a: 1, b: 2}), 'vs. Object');
+  ok(smartmatch({a: 1, b: 2}, function (object) { return object.b === 2; }), 'vs. Function');
 });
  
 test('Function', function () {
