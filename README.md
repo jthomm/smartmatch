@@ -2,13 +2,9 @@
 
 `smartmatch` is a faux-overloaded equality function for JavaScript.
 
-### Faux-verloading
+## Examples
 
-JavaScript does not support type checking by default, so `smartmatch` does it at run time.  Thus, if performance is your #1 concern, `smartmatch` may not be right for you.
-
-### Examples
-
-The following examples return true:
+The following return true:
 
 ```js
 // Normal comparison
@@ -27,9 +23,18 @@ smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {d
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
 ```
 
-### Behavior
+## Faux-verloading
 
-In the below tables, the first column denotes `x`'s type and the top row denotes `y`'s type:
+JavaScript does not support type checking by default, so `smartmatch` does it at run time.  Thus, if performance is your top priority, `smartmatch` may not be right for you.
+
+### Performance Tests
+
+Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison), `smartmatch` performs anywhere from 5-7 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude!  Yay.
+
+## Behavior Table
+
+If `smartmatch(x, y)`, the first column denotes `x`'s type and the top row denotes `y`'s:
+
 ```js
 +----------+-------------------------------+-----------+--------------+--------------+
 |          | Function                      | Array     | Object       | RegExp       |
@@ -58,11 +63,21 @@ In the below tables, the first column denotes `x`'s type and the top row denotes
 | Other    | false               | false               | false           | x === y   |
 +----------+---------------------+---------------------+-----------------+-----------+
 ```
- 
+
 ...where:
- 
+
 * `all(x, y)` means corresponding elements of `x` and `y` smartmatch one another
 * `any(x, y)` means at least one element of `x` smartmatches `y`
 * `values(x, y)` means the values of keys that `x` and `y` both have smartmatch one another
 * `srcCmp(x, y)` means the source and flags of regexes `x` and `y` are the same
 * `harmEgal(x, y)` stands for `x === y ? (x !== 0 || 1 / x === 1 / y) : x !== x && y !== y`
+
+## License
+
+Copyright (c) 2012 J. Thomas Martin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
