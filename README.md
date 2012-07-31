@@ -2,9 +2,9 @@
 
 `smartmatch` is a faux-overloaded equality function for JavaScript.
 
-## Examples
+### What does it do?
 
-The following return true:
+It allows you to compare arbitrary data types to see if they "match".  For example:
 
 ```js
 // Normal comparison
@@ -23,13 +23,56 @@ smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {d
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
 ```
 
-## Faux-verloading
+### How does it work?
 
-JavaScript does not support type checking by default, so `smartmatch` does it at run time.  Thus, if performance is your top priority, `smartmatch` may not be right for you.
+Since JavaScript does not support type checking by default, `smartmatch` does it at run time.  It then routes your query to a sensible comparison function.  That's it.  (See [below](https://github.com/jthomm/smartmatch#behavior-table) for a table of comparison functions it uses.)
 
-### Performance Tests
+### How slow is that?
 
-Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison), `smartmatch` performs anywhere from 5-7 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude!  Yay.
+Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison), `smartmatch` performs anywhere from 5-7 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude.
+
+So, it's decently fast but not necessarily appropriate for high performance applications.
+
+### Why would I use it?
+
+A straightforward use case might be finding objects inside of a collection.  Suppose, for example, you had a collection of objects about NFL running backs:
+
+```js
+var rbs = [
+  {name: 'Arian Foster', age: 25, team: 'HOU', ypc: 4.7},
+  {name: 'Ray Rice', age: 25, team: 'BAL', ypc: 4.6},
+  {name: 'LeSean McCoy', age: 24, team: 'PHI', ypc: 4.8},
+  {name: 'Ryan Mathews', age: 24, team: 'SD', ypc: 4.7},
+  {name: 'Chris Johnson', age: 26, team: 'TEN', ypc: 4.8},
+  {name: 'Maurice Jones-Drew', age: 27, team: 'JAC', ypc: 4.6},
+  {name: 'Matt Forte', age: 26, team: 'CHI', ypc: 4.2},
+  {name: 'DeMarco Murray', age: 22, team: 'DAL', ypc: 5.5},
+  {name: 'Roy Helu', age: 23, team: 'WAS', ypc: 4.2},
+  {name: 'DeAngelo Williams', age: 29, team: 'CAR', ypc: 5.1}
+];
+```
+
+Then you could easily check and see whether any of them average more than 5 yards-per-carry:
+
+```js
+smartmatch(rbs, {ypc: function (ypc) { return ypc > 5; }}); // true
+```
+
+...or find all running backs in the NFC East with cool names:
+
+```js
+var query = {name: /^[A-Z][a-z]+[A-Z]/, team: ['NYG', 'WAS', 'DAL', 'PHI']}, i = rbs.length, rb;
+
+while (i--) {
+  rb = rbs[i];
+  if (smartmatch(rb, query)) {
+    console.log(rb);
+  }
+}
+
+// {name: 'DeMarco Murray', age: 22, team: 'DAL', ypc: 5.5}
+// {name: 'LeSean McCoy', age: 24, team: 'PHI', ypc: 4.8}
+```
 
 ## Behavior Table
 
