@@ -29,7 +29,7 @@ Since JavaScript does not support type checking by default, `smartmatch` does it
 
 ### How slow is that?
 
-Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison), `smartmatch` performs anywhere from 5-7 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude.
+Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison/2), `smartmatch` performs anywhere from 5-7 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude.
 
 So, it's decently fast but not necessarily appropriate for high performance applications.
 
