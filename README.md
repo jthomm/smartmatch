@@ -56,7 +56,7 @@ smartmatch(rbs, {ypc: function (ypc) { return ypc > 5; }, team: 'CAR'}); // true
 ```js
 var query = {name: /^[A-Z][a-z]+[A-Z]/, team: ['NYG', 'WAS', 'DAL', 'PHI']}, i = rbs.length, rb;
 
-while (i--) {
+while (--i) {
   rb = rbs[i];
   if (smartmatch(rb, query)) {
     console.log(rb);
