@@ -1,10 +1,6 @@
 # Smartmatch.js
 
-`smartmatch` is a faux-overloaded equality function for JavaScript.
-
-### What does it do?
-
-It allows you to compare arbitrary data types to see if they "match".  For example:
+`smartmatch` is a faux-overloaded equality function for JavaScript.  For example:
 
 ```js
 // Normal comparison
@@ -23,19 +19,15 @@ smartmatch({name: 'Jenny', number: '867-5309', date: new Date(1981, 10, 16)}, {d
 smartmatch('Jenny', function (name) { return bayes.classify(name) === 'female'; });
 ```
 
-### How does it work?
+## Performance
 
-Since JavaScript does not support type checking by default, `smartmatch` does it at run time.  It then routes your query to a sensible comparison function.  That's it.  (See [below](https://github.com/jthomm/smartmatch#behavior-table) for a table of comparison functions it uses.)
+Since JavaScript does not support type checking by default, `smartmatch` does it at run time.  Thus, if performance is your top priority, you might want to look elsewhere.
 
-### How slow is that?
+However, you may be interested to know that `smartmatch` is no more than 5x slower than direct comparison on a mixed bag of type combinations (see [this unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison/2)).  In most cases, we're talking less than an order of magnitude performance degradation.
 
-Based on an [unscientific investigation](http://jsperf.com/smartmatch-vs-direct-comparison/2), `smartmatch` performs anywhere from 3-5 times slower than direct comparison on a mixed bag of type combinations -- less than one order of magnitude.
+## Rationale
 
-So, it's decently fast but not necessarily appropriate for high performance applications.
-
-### Why would I use it?
-
-A straightforward use case might be finding objects inside of a collection.  Suppose, for example, you had a collection of objects about NFL running backs:
+A straightforward use case might involve finding objects inside of a collection.  Suppose, for example, you had a collection of objects about NFL running backs:
 
 ```js
 var rbs = [
@@ -47,15 +39,16 @@ var rbs = [
   {name: 'Maurice Jones-Drew', age: 27, team: 'JAC', ypc: 4.6},
   {name: 'Matt Forte', age: 26, team: 'CHI', ypc: 4.2},
   {name: 'DeMarco Murray', age: 22, team: 'DAL', ypc: 5.5},
+  {name: 'Jonathan Stewart', age: 25, team: 'CAR', ypc: 4.8},
   {name: 'Roy Helu', age: 23, team: 'WAS', ypc: 4.2},
   {name: 'DeAngelo Williams', age: 29, team: 'CAR', ypc: 5.1}
 ];
 ```
 
-Then you could easily check and see whether any of them average more than 5 yards-per-carry:
+Then you could easily check and see whether any Panthers backs average more than 5 yards-per-carry:
 
 ```js
-smartmatch(rbs, {ypc: function (ypc) { return ypc > 5; }}); // true
+smartmatch(rbs, {ypc: function (ypc) { return ypc > 5; }, team: 'CAR'}); // true
 ```
 
 ...or find all running backs in the NFC East with cool names:
