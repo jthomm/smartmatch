@@ -1,0 +1,33 @@
+{
+  "author": {
+    "name": "J. Thomas Martin",
+    "email": "jthomm@yahoo.com"
+  },
+  "name": "smartmatch",
+  "description": "A faux-overloaded equality function for JavaScript.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jthomm/smartmatch.git"
+  },
+  "main": "smartmatch.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "_npmUser": {
+    "name": "jthomm",
+    "email": "jthomm@yahoo.com"
+  },
+  "_id": "smartmatch@0.1.0",
+  "_engineSupported": true,
+  "_npmVersion": "1.1.21",
+  "_nodeVersion": "v0.6.17",
+  "_defaultsLoaded": true,
+  "dist": {
+    "shasum": "93fc8c360b6fd7d7cf15e4c5ebaa834810d5fb60"
+  },
+  "_from": "smartmatch"
+}
