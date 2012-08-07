@@ -54,13 +54,17 @@ smartmatch(rbs, {ypc: function (ypc) { return ypc > 5; }, team: 'CAR'}); // true
 ...or find all running backs in the NFC East with cool names:
 
 ```js
-var query = {name: /^[A-Z][a-z]+[A-Z]/, team: ['NYG', 'WAS', 'DAL', 'PHI']}, i = rbs.length, rb;
+var query = {name: /^[A-Z][a-z]+[A-Z]/, team: ['NYG', 'WAS', 'DAL', 'PHI']}
+  , i = 0
+  , n = rbs.length
+  , rb;
 
-while (--i) {
+while (i < n) {
   rb = rbs[i];
   if (smartmatch(rb, query)) {
     console.log(rb);
   }
+  i += 1;
 }
 
 // {name: 'DeMarco Murray', age: 22, team: 'DAL', ypc: 5.5}
