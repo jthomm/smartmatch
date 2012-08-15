@@ -1,17 +1,17 @@
 //     (c) 2012 J. Thomas Martin
 //     Smartmatch.js is freely distributable under the MIT license.
-//     Portions of Smartmatch.js are inspired or borrowed from Underscore.js, 
+//     Portions of Smartmatch.js are inspired or borrowed from Underscore.js,
 //     as well as Perl's smartmatch operator (http://perldoc.perl.org/perlop.html).
 
 (function () {
   'use strict';
- 
+
   // Establish the root object (`window` in the browser, `global` on server):
-  var root = this,
+  var root = this
   // Create references for easy access to `toString` and `hasOwnProperty`:
-      toString = Object.prototype.toString,
-      hasOwn = Object.prototype.hasOwnProperty;
- 
+    , toString = Object.prototype.toString
+    , hasOwn = Object.prototype.hasOwnProperty;
+
   // Source and flags are the same:
   function reEqualsRe(x, y) {
     return x.source === y.source &&
@@ -19,7 +19,7 @@
            x.multiline === y.multiline &&
            x.ignoreCase === y.ignoreCase;
   }
- 
+
   // At least one element of `array` smartmatches `item`:
   function anyElementMatches(array, item) {
     var i = array.length;
@@ -31,7 +31,7 @@
     }
     return false;
   }
- 
+
   // Corresponding array elements smartmatch each other:
   function allElementsMatch(x, y) {
     var i = x.length;
@@ -47,7 +47,7 @@
     }
     return true;
   }
- 
+
   // Values of common keys smartmatch one another:
   function commonKeysMatch(x, y) {
     var key;
@@ -58,7 +58,7 @@
     }
     return true;
   }
- 
+
   // Core smartmatch function:
   function smartmatch(x, y) {
     var xClass = toString.call(x), yClass = toString.call(y);
@@ -135,7 +135,7 @@
         }
     }
   }
- 
+
   // Export `smartmatch`.  If in browser, add `smartmatch` as a global object.
   if (typeof exports !== 'undefined') {
     if (typeof module !== 'undefined' && module.exports) {
@@ -145,5 +145,5 @@
   } else {
     root['smartmatch'] = smartmatch;
   }
- 
+
 }).call(this);
