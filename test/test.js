@@ -33,7 +33,7 @@ test('Boolean', function () {
 });
 
 test('String', function () {
-  var endsWithPie = function (string) { return string.slice(-3) === 'Pie'; };
+  function endsWithPie(string) { return string.slice(-3) === 'Pie'; }
 
   ok(!smartmatch('', null), 'vs. Null');
   ok(!smartmatch('', undefined), 'vs. Undefined');
@@ -51,11 +51,14 @@ test('String', function () {
 });
 
 test('Number', function () {
-  var inf = 1/0;
-  var negInf = -1/0;
-  var zero = 1/inf;
-  var negZero = 1/negInf;
-  var isLessThanPi = function (number) { return number < Math.PI; };
+  var inf = 1/0
+    , negInf = -1/0
+    , zero = 1/inf
+    , negZero = 1/negInf
+    , date = new Date(1987, 2, 28)
+    , dateNumber = +date
+  ;
+  function isLessThanPi(number) { return number < Math.PI; }
 
   ok(!smartmatch(0, null), 'vs. Null');
   ok(!smartmatch(0, undefined), 'vs. Undefined');
@@ -70,7 +73,7 @@ test('Number', function () {
   ok(!smartmatch(zero, negZero), '`0` vs. `-0`');
   ok(smartmatch(1/'a', 1/'b'), 'vs. `NaN`');
   ok(smartmatch(911, /(\d)\1/), 'vs. RegExp');
-  ok(smartmatch(543906000000, new Date(1987, 2, 28)), 'vs. Date');
+  ok(smartmatch(dateNumber, date), 'vs. Date');
   ok(smartmatch(3.14, ['a', 'b', 3.14]), 'vs. Array');
   ok(!smartmatch(0, []), 'vs. `[]`');
   ok(!smartmatch(3.14, {a: 3.14, 3.14: 'b'}), 'vs. Object');
@@ -79,15 +82,17 @@ test('Number', function () {
 });
 
 test('Date', function () {
-  var date = new Date(1987, 2, 28);
-  var is20thCentury = function (date) { return date.getFullYear() < 2000; };
+  var date = new Date(1987, 2, 28)
+    , dateNumber = +date
+  ;
+  function is20thCentury(date) { return date.getFullYear() < 2000; }
 
   ok(!smartmatch(date, null), 'vs. Null');
   ok(!smartmatch(date, undefined), 'vs. Undefined');
   ok(!smartmatch(date, true), 'vs. Boolean');
   ok(smartmatch(date, '3/28/1987'), 'vs. String 1');
   ok(smartmatch(date, '1987-3-28'), 'vs. String 2');
-  ok(smartmatch(date, 543906000000), 'vs. Number');
+  ok(smartmatch(date, dateNumber), 'vs. Number');
   ok(smartmatch(date, /^Sat/), 'vs. RegExp');
   ok(smartmatch(date, new Date(1987, 2, 28)), 'vs. Date');
   ok(smartmatch(date, ['a', 'b', new Date(1987, 2, 28)]), 'vs. Array');
@@ -111,14 +116,14 @@ test('RegExp', function () {
 });
 
 test('Array', function () {
+  var dates = [new Date(1897, 5, 19), new Date(1902, 9, 5), new Date(1903, 9, 22)];
+
   ok(smartmatch(['a', 'b', null], null), 'vs. Null');
   ok(smartmatch(['a', 'b', undefined], undefined), 'vs. Undefined');
   ok(smartmatch(['a', 'b', false], false), 'vs. Boolean');
   ok(smartmatch(['a', 'b', 'c'], 'c'), 'vs. String');
   ok(smartmatch(['a', 'b', 3], 3), 'vs. Number');
-  ok(smartmatch([new Date(1897, 5, 19), new Date(1902, 9, 5), new Date(1903, 9, 22)], 
-                new Date(1903, 9, 22)),
-     'vs. Date');
+  ok(smartmatch(dates, new Date(1903, 9, 22)), 'vs. Date');
   ok(smartmatch(['a', 'b', /\d/], /\d/), 'vs. RegExp');
   ok(smartmatch(['a', 'b', 'c'], ['a', 'b', 'c']), 'vs. Array');
   ok(smartmatch([{c: 3}, {b: 2}], {a: 1, b: 2}), 'vs. Object');
@@ -139,11 +144,14 @@ test('Object', function () {
 });
 
 test('Function', function () {
-  var isLessThanPi = function (number) { return number < Math.PI; };
-  var isLessThanPiClone = function (number) { return number < Math.PI; };
-  var lastElemIsPi = function (array) { return array[array.length - 1] === Math.PI; };
-  var hasOwnPie = function (object) { return object.hasOwnProperty('pie'); };
-  var endsWithPie = function (string) { return string.slice(-3) === 'Pie'; };
+  var isLessThanPiAnon = function (number) { return number < Math.PI; }
+    , isLessThanPiTooAnon = function (number) { return number < Math.PI; }
+  ;
+  function isLessThanPi(number) { return number < Math.PI; }
+  function isLessThanPiToo(number) { return number < Math.PI; }
+  function lastElemIsPi(array) { return array[array.length - 1] === Math.PI; }
+  function hasOwnPie(object) { return object.hasOwnProperty('pie'); }
+  function endsWithPie(string) { return string.slice(-3) === 'Pie'; }
 
   ok(smartmatch(isLessThanPi, null), 'vs. Null');
   ok(!smartmatch(isLessThanPi, undefined), 'vs. Undefined');
@@ -152,5 +160,6 @@ test('Function', function () {
   ok(smartmatch(isLessThanPi, 3.14), 'vs. Number');
   ok(smartmatch(lastElemIsPi, ['a', 'b', Math.PI]), 'vs. Array');
   ok(smartmatch(hasOwnPie, {'a': 1, 'b': 2, 'pie': 'yay'}), 'vs. Object');
-  ok(smartmatch(isLessThanPi, isLessThanPiClone), 'vs. Function');
+  ok(!smartmatch(isLessThanPi, isLessThanPiToo), 'vs. Function');
+  ok(smartmatch(isLessThanPiAnon, isLessThanPiTooAnon), 'vs. Anonymous Function');
 });
